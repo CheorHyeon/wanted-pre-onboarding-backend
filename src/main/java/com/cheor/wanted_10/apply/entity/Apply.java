@@ -19,13 +19,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 @Entity
-// JPA Auditing : 시간에 대해 자동으로 값을 넣어주는 기능
 @EntityListeners(AuditingEntityListener.class) // + enableJpaAuditing => JPA Auditing 활성
 public class Apply {
 	@Id
