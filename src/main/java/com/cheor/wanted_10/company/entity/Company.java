@@ -21,17 +21,21 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
-@Setter
+@Builder(toBuilder = true)
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 // JPA Auditing : 시간에 대해 자동으로 값을 넣어주는 기능
 @EntityListeners(AuditingEntityListener.class) // + enableJpaAuditing => JPA Auditing 활성
 public class Company {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
