@@ -1,5 +1,7 @@
 package com.cheor.wanted_10.base.rsData;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,11 +29,11 @@ public class RsData<T> {
 	public static <T> RsData<T> failOf(T data) {
 		return of("F-1", "실패", data);
 	}
-
+	@JsonIgnore
 	public boolean isSuccess() {
 		return resultCode.startsWith("S-");
 	}
-
+	@JsonIgnore
 	public boolean isFail() {
 		return !isSuccess();
 	}
