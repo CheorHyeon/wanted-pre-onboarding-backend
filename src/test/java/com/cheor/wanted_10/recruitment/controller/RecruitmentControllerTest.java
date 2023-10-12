@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
+import com.cheor.wanted_10.recruitment.service.RecruitmentService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -31,6 +32,9 @@ public class RecruitmentControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
+	@Autowired
+	private RecruitmentService recruitmentService;
+
 	@Test
 	@DisplayName("채용공고 등록 테스트")
 	void t001() throws Exception {
@@ -39,11 +43,11 @@ public class RecruitmentControllerTest {
 				post("/recruitment/register")
 					.content("""
 						{
-							"companyId": 1,
+							"companyName": "회사1",
 						   "position": "백엔드 주니어 개발자",
 						   "reward": 1000000,
 						   "content": "원티드랩에서 백엔드 주니어 개발자를 채용합니다. 자격요건은..",
-						   "skill":" Python"
+						   "skill":"Python"
 						}
 						""")
 					.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
@@ -52,6 +56,7 @@ public class RecruitmentControllerTest {
 
 		resultActions
 			.andExpect(status().is2xxSuccessful())
-			.andExpect(handler().methodName("register"));
+			.andExpect(handler().methodName("register"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"));
 	}
 }
