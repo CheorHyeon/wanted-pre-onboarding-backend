@@ -57,6 +57,51 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("register"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"));
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.skill").value("Python"));
+	}
+
+	@Test
+	@DisplayName("채용공고 수정 테스트1")
+	void t002() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				patch("/recruitment/modify/1")
+					.content("""
+						{
+						   "position": "수정된개발자공고!"
+						}
+						""")
+					.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("modify"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.position").value("수정된개발자공고!"));
+	}
+
+	@Test
+	@DisplayName("채용공고 수정 테스트2")
+	void t003() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				patch("/recruitment/modify/1")
+					.content("""
+						{
+						   "skill": "수정된skill!"
+						}
+						""")
+					.contentType(new MediaType(MediaType.APPLICATION_JSON, StandardCharsets.UTF_8))
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("modify"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.skill").value("수정된skill!"));
 	}
 }
