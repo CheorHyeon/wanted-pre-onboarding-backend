@@ -1,5 +1,7 @@
 package com.cheor.wanted_10.recruitment.service;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +10,7 @@ import com.cheor.wanted_10.company.company.CompanyService;
 import com.cheor.wanted_10.company.entity.Company;
 import com.cheor.wanted_10.recruitment.controller.RecruitmentController;
 import com.cheor.wanted_10.recruitment.dto.RecruitmentDTO;
+import com.cheor.wanted_10.recruitment.dto.RecruitmentModifyDTO;
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.repository.RecruitmentRepository;
 
@@ -40,5 +43,27 @@ public class RecruitmentService {
 		recruitmentRepository.save(recruitment);
 
 		return RsData.of("S-1", "지원공고가 성공적으로 등록되었습니다.", recruitment);
+	}
+
+	@Transactional
+	public RsData<Recruitment> modify(Long recruitmentId, RecruitmentModifyDTO recruitmentModifyDTO) {
+		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(recruitmentId);
+
+		if(opRecruitment.isEmpty()) {
+			return RsData.of("F-1", "등록되지 않은 공고입니다.");
+		}
+
+		Recruitment recruitment = opRecruitment.get();
+
+		Recruitment modifyRecruitment = recruitment.toBuilder()
+			.position(recruitmentModifyDTO.getPosition() == null ? recruitment.getPosition() : recruitmentModifyDTO.getPosition())
+			.content(recruitmentModifyDTO.getContent() == null ? recruitment.getContent() : recruitmentModifyDTO.getContent())
+			.reward(recruitmentModifyDTO.getReward() == null ? recruitment.getReward() : recruitmentModifyDTO.getReward())
+			.skill(recruitmentModifyDTO.getSkill() == null ? recruitment.getSkill() : recruitmentModifyDTO.getSkill())
+			.build();
+
+		recruitmentRepository.save(modifyRecruitment);
+
+		return RsData.of("S-1", "공고가 수정되었습니다.", modifyRecruitment);
 	}
 }

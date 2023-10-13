@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheor.wanted_10.apply.repository.ApplyRepository;
 import com.cheor.wanted_10.company.entity.Company;
 import com.cheor.wanted_10.company.repository.CompanyRepository;
+import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.repository.RecruitmentRepository;
 import com.cheor.wanted_10.user.entity.SiteUser;
 import com.cheor.wanted_10.user.repository.UserRepository;
@@ -54,6 +55,23 @@ public class NotProd {
 
 				userRepository.saveAll(List.of(user1, user2));
 
+				Recruitment recruitment1 = Recruitment.builder()
+					.content("테스트 채용1")
+					.skill("python")
+					.reward(3000)
+					.company(company1)
+					.position("백엔드")
+					.build();
+
+				Recruitment recruitment2 = Recruitment.builder()
+					.content("테스트 채용2")
+					.skill("java")
+					.reward(1000)
+					.company(company2)
+					.position("백엔드")
+					.build();
+
+				recruitmentRepository.saveAll(List.of(recruitment1, recruitment2));
 			}
 		};
 	}
