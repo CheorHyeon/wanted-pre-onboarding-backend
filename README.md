@@ -27,7 +27,7 @@
 - [x] 채용 공고 수정
     - URL을 통해 채용 공고의 Id를 받아 조회하고 수정할 속성을 수정합니다.
     - 회사명이나 회사 Id는 DTO 객체에 JSON 매칭을 하지 않기에 무시되어 수정되지 않습니다.
-    - PETCH 메서드를 구현하였습니다.
+    - PATCH 메서드를 구현하였습니다.
     - 상세 파일별 구현 내용은 [PR](https://github.com/CheorHyeon/wanted-pre-onboarding-backend/pull/2)에서 확인할 수 있습니다.
 - [x] 채용 공고 삭제
     - DELETE 메서드 요청 URL을 통해 삭제할 채용공고의 ID를 받아와서 삭제합니다.
