@@ -109,9 +109,15 @@ public class RecruitmentController {
 	}
 
 	@GetMapping("/list")
-	public RsData<RecruitmentsResponse> readAll() {
-		List<Recruitment> recruitments = recruitmentService.getAll();
-
+	public RsData<RecruitmentsResponse> readAll(String search) {
+		List<Recruitment> recruitments;
+		// 검색어 유무에 따라 다른 메서드 호출
+		if(search.isEmpty()) {
+			recruitments = recruitmentService.getAll();
+		}
+		else {
+			recruitments = recruitmentService.getByKeyWord(search);
+		}
 		return RsData.of(
 			"S-1",
 			"공고 조회",

@@ -184,4 +184,36 @@ public class RecruitmentControllerTest {
 			.andExpect(jsonPath("$.data.companyName").value("회사2"))
 			.andExpect(jsonPath("$.data.otherRecruitmentsId").isEmpty());
 	}
+
+	@Test
+	@DisplayName("채용공고 검색 테스트")
+	void t008() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				get("/recruitment/list?search=python")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("readAll"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.recruitments[0].skill").value("python"));
+	}
+
+	@Test
+	@DisplayName("채용공고 검색 테스트2")
+	void t009() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				get("/recruitment/list?search=java")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("readAll"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.recruitments[0].skill").value("java"));
+	}
 }
