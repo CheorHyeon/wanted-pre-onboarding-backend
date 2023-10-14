@@ -35,29 +35,6 @@ import lombok.RequiredArgsConstructor;
 public class RecruitmentController {
 	private final RecruitmentService recruitmentService;
 
-	@AllArgsConstructor
-	@Getter
-	@NoArgsConstructor
-	public static class RecruitmentResponse {
-		private Long id;
-		private String companyName;
-		private String position;
-		private Integer reward;
-
-		private String content;
-		private String skill;
-
-		@JsonCreator
-		public RecruitmentResponse(Recruitment recruitment) {
-			this.id = recruitment.getId();
-			this.companyName = recruitment.getCompany().getName();
-			this.position = recruitment.getPosition();
-			this.reward = recruitment.getReward();
-			this.content = recruitment.getContent();
-			this.skill = recruitment.getSkill();
-		}
-	}
-
 	@PostMapping("/register")
 	@Operation(summary = "채용 공고 등록")
 	public RsData<RecruitmentResponse> register(@Valid @RequestBody RecruitmentDTO recruitmentDTO) {
@@ -67,28 +44,6 @@ public class RecruitmentController {
 			return (RsData)rsData;
 		}
 		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentResponse(rsData.getData()));
-	}
-
-	@AllArgsConstructor
-	@Getter
-	@NoArgsConstructor
-	public static class ModifyResponse {
-		private Long id;
-		private String companyName;
-		private String position;
-		private Integer reward;
-		private String content;
-		private String skill;
-
-		@JsonCreator
-		public ModifyResponse(Recruitment recruitment) {
-			this.id = recruitment.getId();
-			this.companyName = recruitment.getCompany().getName();
-			this.position = recruitment.getPosition();
-			this.reward = recruitment.getReward();
-			this.content = recruitment.getContent();
-			this.skill = recruitment.getSkill();
-		}
 	}
 
 	@PatchMapping(value = "/modify/{id}")
@@ -107,12 +62,6 @@ public class RecruitmentController {
 	public RsData delete(@PathVariable Long id) {
 		RsData rsData = recruitmentService.delete(id);
 		return rsData;
-	}
-
-	@AllArgsConstructor
-	@Getter
-	public static class RecruitmentsResponse {
-		private final List<Recruitment> recruitments;
 	}
 
 	@GetMapping("/list")
@@ -138,18 +87,6 @@ public class RecruitmentController {
 		);
 	}
 
-	@AllArgsConstructor
-	@Getter
-	@NoArgsConstructor
-	public static class RecruitmentDetailResponse extends RecruitmentResponse {
-		private List<Long> otherRecruitmentsId;
-
-		public RecruitmentDetailResponse(Recruitment recruitment, List<Long> otherRecruitmentsId) {
-			super(recruitment);
-			this.otherRecruitmentsId = otherRecruitmentsId;
-		}
-	}
-
 	@GetMapping("/{id}")
 	@Operation(summary = "채용 공고 상세 조회")
 	public RsData<RecruitmentDetailResponse> read(@PathVariable Long id) {
@@ -172,5 +109,68 @@ public class RecruitmentController {
 		}
 		return RsData.of(rsData.getResultCode(), rsData.getMsg(),
 			new RecruitmentDetailResponse(recruitment, otherRecruitmentsId));
+	}
+
+	@AllArgsConstructor
+	@Getter
+	@NoArgsConstructor
+	public static class RecruitmentResponse {
+		private Long id;
+		private String companyName;
+		private String position;
+		private Integer reward;
+
+		private String content;
+		private String skill;
+
+		@JsonCreator
+		public RecruitmentResponse(Recruitment recruitment) {
+			this.id = recruitment.getId();
+			this.companyName = recruitment.getCompany().getName();
+			this.position = recruitment.getPosition();
+			this.reward = recruitment.getReward();
+			this.content = recruitment.getContent();
+			this.skill = recruitment.getSkill();
+		}
+	}
+
+	@AllArgsConstructor
+	@Getter
+	@NoArgsConstructor
+	public static class ModifyResponse {
+		private Long id;
+		private String companyName;
+		private String position;
+		private Integer reward;
+		private String content;
+		private String skill;
+
+		@JsonCreator
+		public ModifyResponse(Recruitment recruitment) {
+			this.id = recruitment.getId();
+			this.companyName = recruitment.getCompany().getName();
+			this.position = recruitment.getPosition();
+			this.reward = recruitment.getReward();
+			this.content = recruitment.getContent();
+			this.skill = recruitment.getSkill();
+		}
+	}
+
+	@AllArgsConstructor
+	@Getter
+	public static class RecruitmentsResponse {
+		private final List<Recruitment> recruitments;
+	}
+
+	@AllArgsConstructor
+	@Getter
+	@NoArgsConstructor
+	public static class RecruitmentDetailResponse extends RecruitmentResponse {
+		private List<Long> otherRecruitmentsId;
+
+		public RecruitmentDetailResponse(Recruitment recruitment, List<Long> otherRecruitmentsId) {
+			super(recruitment);
+			this.otherRecruitmentsId = otherRecruitmentsId;
+		}
 	}
 }

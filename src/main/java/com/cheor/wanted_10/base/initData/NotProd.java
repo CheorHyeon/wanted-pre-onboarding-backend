@@ -20,8 +20,8 @@ import com.cheor.wanted_10.user.repository.UserRepository;
 @Profile({"dev", "test"})
 public class NotProd {
 	@Bean
-	 CommandLineRunner initData(
-		 CompanyRepository companyRepository,
+	CommandLineRunner initData(
+		CompanyRepository companyRepository,
 		RecruitmentRepository recruitmentRepository,
 		UserRepository userRepository,
 		ApplyRepository applyRepository

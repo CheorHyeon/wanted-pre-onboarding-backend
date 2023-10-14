@@ -47,7 +47,7 @@ public class ApplyControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("create"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-7"))
 			.andExpect(jsonPath("$.msg").value("성공적으로 지원하였습니다."))
 			.andExpect(jsonPath(("$.data.apply.id")).value(1));
 
@@ -67,7 +67,7 @@ public class ApplyControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("create"))
-			.andExpect(jsonPath("$.resultCode").value("F-1"))
+			.andExpect(jsonPath("$.resultCode").value("F-4"))
 			.andExpect(jsonPath("$.msg").value("이미 지원하였습니다."));
 	}
 }

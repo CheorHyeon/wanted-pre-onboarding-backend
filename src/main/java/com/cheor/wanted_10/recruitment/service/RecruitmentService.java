@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cheor.wanted_10.base.rsData.RsData;
-import com.cheor.wanted_10.company.company.CompanyService;
 import com.cheor.wanted_10.company.entity.Company;
+import com.cheor.wanted_10.company.service.CompanyService;
 import com.cheor.wanted_10.recruitment.dto.RecruitmentDTO;
 import com.cheor.wanted_10.recruitment.dto.RecruitmentModifyDTO;
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
@@ -40,7 +40,7 @@ public class RecruitmentService {
 
 		recruitmentRepository.save(recruitment);
 
-		return RsData.of("S-1", "지원공고가 성공적으로 등록되었습니다.", recruitment);
+		return RsData.of("S-2", "지원공고가 성공적으로 등록되었습니다.", recruitment);
 	}
 
 	@Transactional
@@ -48,7 +48,7 @@ public class RecruitmentService {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(recruitmentId);
 
 		if (opRecruitment.isEmpty()) {
-			return RsData.of("F-1", "등록되지 않은 공고입니다.");
+			return RsData.of("F-2", "등록되지 않은 공고입니다.");
 		}
 
 		Recruitment recruitment = opRecruitment.get();
@@ -65,7 +65,7 @@ public class RecruitmentService {
 
 		recruitmentRepository.save(modifyRecruitment);
 
-		return RsData.of("S-1", "공고가 수정되었습니다.", modifyRecruitment);
+		return RsData.of("S-3", "공고가 수정되었습니다.", modifyRecruitment);
 	}
 
 	@Transactional
@@ -73,14 +73,14 @@ public class RecruitmentService {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(id);
 
 		if (opRecruitment.isEmpty()) {
-			return RsData.of("F-1", "존재하지 않는 공고입니다.");
+			return RsData.of("F-2", "존재하지 않는 공고입니다.");
 		}
 
 		Recruitment recruitment = opRecruitment.get();
 
 		recruitmentRepository.delete(recruitment);
 
-		return RsData.of("S-1",
+		return RsData.of("S-4",
 			"%s 회사의 %s 직무 공고가 성공적으로 삭제되었습니다.".formatted(recruitment.getCompany().getName(), recruitment.getPosition()));
 	}
 
@@ -92,10 +92,10 @@ public class RecruitmentService {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(id);
 
 		if (opRecruitment.isEmpty()) {
-			return RsData.of("F-1", "존재하지 않는 공고입니다.");
+			return RsData.of("F-2", "존재하지 않는 공고입니다.");
 		}
 
-		return RsData.of("S-1", "조회 성공", opRecruitment.get());
+		return RsData.of("S-5", "공고 조회 성공", opRecruitment.get());
 	}
 
 	public List<Recruitment> getCompanyRecruitments(Company company) {

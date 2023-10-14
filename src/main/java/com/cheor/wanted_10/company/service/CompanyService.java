@@ -1,4 +1,4 @@
-package com.cheor.wanted_10.company.company;
+package com.cheor.wanted_10.company.service;
 
 import org.springframework.stereotype.Service;
 
@@ -12,10 +12,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CompanyService {
 	private final CompanyRepository companyRepository;
+
 	public RsData<Company> getCompanyByName(String companyName) {
 		Company findCompany = companyRepository.findByName(companyName);
-		if(findCompany == null) {
-			return RsData.of("F-1", "등록된 회사가 아님");
+		if (findCompany == null) {
+			return RsData.of("F-1", "본 서비스에 등록된 회사가 아닙니다.");
 		}
 
 		return RsData.of("S-1", "회사 찾기 성공", findCompany);
