@@ -2,6 +2,7 @@ package com.cheor.wanted_10.recruitment.controller;
 
 import static org.springframework.http.MediaType.*;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,5 +89,11 @@ public class RecruitmentController {
 			return (RsData)rsData;
 		}
 		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new ModifyResponse(rsData.getData()));
+	}
+
+	@DeleteMapping("/{id}")
+	public RsData delete(@PathVariable Long id) {
+		RsData rsData = recruitmentService.delete(id);
+		return rsData;
 	}
 }
