@@ -6,7 +6,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.nio.charset.StandardCharsets;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.service.RecruitmentService;
 
 @SpringBootTest
@@ -57,7 +55,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("register"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-2"))
 			.andExpect(jsonPath("$.data.skill").value("Python"));
 	}
 
@@ -79,7 +77,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("modify"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-3"))
 			.andExpect(jsonPath("$.data.position").value("수정된개발자공고!"));
 	}
 
@@ -101,7 +99,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("modify"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-3"))
 			.andExpect(jsonPath("$.data.skill").value("수정된skill!"));
 	}
 
@@ -117,7 +115,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("delete"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-4"))
 			.andExpect(jsonPath("$.msg").value("회사1 회사의 백엔드 직무 공고가 성공적으로 삭제되었습니다."));
 
 		// 삭제한거 다시 삭제하려 시도
@@ -130,7 +128,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("delete"))
-			.andExpect(jsonPath("$.resultCode").value("F-1"))
+			.andExpect(jsonPath("$.resultCode").value("F-2"))
 			.andExpect(jsonPath("$.msg").value("존재하지 않는 공고입니다."));
 	}
 
@@ -162,7 +160,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("read"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-5"))
 			.andExpect(jsonPath("$.data.companyName").value("회사1"))
 			.andExpect(jsonPath("$.data.otherRecruitmentsId[0]").value(3))
 			.andExpect(jsonPath("$.data.otherRecruitmentsId[1]").value(4));
@@ -180,7 +178,7 @@ public class RecruitmentControllerTest {
 		resultActions
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("read"))
-			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.resultCode").value("S-5"))
 			.andExpect(jsonPath("$.data.companyName").value("회사2"))
 			.andExpect(jsonPath("$.data.otherRecruitmentsId").isEmpty());
 	}

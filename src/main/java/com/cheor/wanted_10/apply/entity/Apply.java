@@ -10,7 +10,6 @@ import com.cheor.wanted_10.company.entity.Company;
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.user.entity.SiteUser;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -23,7 +22,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @Builder

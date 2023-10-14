@@ -1,8 +1,5 @@
 package com.cheor.wanted_10.recruitment.dto;
 
-import com.cheor.wanted_10.recruitment.entyty.Recruitment;
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

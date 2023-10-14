@@ -29,10 +29,12 @@ public class RsData<T> {
 	public static <T> RsData<T> failOf(T data) {
 		return of("F-1", "실패", data);
 	}
+
 	@JsonIgnore
 	public boolean isSuccess() {
 		return resultCode.startsWith("S-");
 	}
+
 	@JsonIgnore
 	public boolean isFail() {
 		return !isSuccess();
