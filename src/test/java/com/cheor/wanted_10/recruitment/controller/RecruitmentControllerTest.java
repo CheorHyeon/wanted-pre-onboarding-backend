@@ -147,7 +147,7 @@ public class RecruitmentControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("readAll"))
 			.andExpect(jsonPath("$.resultCode").value("S-1"))
-			.andExpect(jsonPath("$.data.recruitments[0].company.name").value("회사2"));
+			.andExpect(jsonPath("$.data.recruitments[0].company.name").value("회사1"));
 	}
 
 	@Test
@@ -163,6 +163,25 @@ public class RecruitmentControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("read"))
 			.andExpect(jsonPath("$.resultCode").value("S-1"))
-			.andExpect(jsonPath("$.data.companyName").value("회사1"));
+			.andExpect(jsonPath("$.data.companyName").value("회사1"))
+			.andExpect(jsonPath("$.data.otherRecruitmentsId[0]").value(3))
+			.andExpect(jsonPath("$.data.otherRecruitmentsId[1]").value(4));
+	}
+
+	@Test
+	@DisplayName("채용공고 단건 조회, 회사 내 공고가 1개일 때 다른 공고 id 출력 안되는지 테스트")
+	void t007() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				get("/recruitment/2")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("read"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.companyName").value("회사2"))
+			.andExpect(jsonPath("$.data.otherRecruitmentsId").isEmpty());
 	}
 }

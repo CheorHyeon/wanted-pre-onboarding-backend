@@ -1,9 +1,7 @@
 package com.cheor.wanted_10.recruitment.controller;
 
-import static org.springframework.http.MediaType.*;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +18,9 @@ import com.cheor.wanted_10.recruitment.dto.RecruitmentModifyDTO;
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.service.RecruitmentService;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +35,7 @@ public class RecruitmentController {
 	@Getter
 	@NoArgsConstructor
 	public static class RecruitmentResponse {
+		private Long id;
 		private String companyName;
 		private String position;
 		private Integer reward;
@@ -50,6 +45,7 @@ public class RecruitmentController {
 
 		@JsonCreator
 		public RecruitmentResponse(Recruitment recruitment) {
+			this.id = recruitment.getId();
 			this.companyName = recruitment.getCompany().getName();
 			this.position = recruitment.getPosition();
 			this.reward = recruitment.getReward();
@@ -72,6 +68,7 @@ public class RecruitmentController {
 	@Getter
 	@NoArgsConstructor
 	public static class ModifyResponse {
+		private Long id;
 		private String companyName;
 		private String position;
 		private Integer reward;
@@ -80,6 +77,7 @@ public class RecruitmentController {
 
 		@JsonCreator
 		public ModifyResponse(Recruitment recruitment) {
+			this.id = recruitment.getId();
 			this.companyName = recruitment.getCompany().getName();
 			this.position = recruitment.getPosition();
 			this.reward = recruitment.getReward();
@@ -121,12 +119,37 @@ public class RecruitmentController {
 		);
 	}
 
+	@AllArgsConstructor
+	@Getter
+	@NoArgsConstructor
+	public static class RecruitmentDetailResponse extends RecruitmentResponse {
+		private List<Long> otherRecruitmentsId;
+
+		public RecruitmentDetailResponse(Recruitment recruitment, List<Long> otherRecruitmentsId) {
+			super(recruitment);
+			this.otherRecruitmentsId = otherRecruitmentsId;
+		}
+	}
+
 	@GetMapping("/{id}")
-	public RsData<RecruitmentResponse> read(@PathVariable Long id) {
+	public RsData<RecruitmentDetailResponse> read(@PathVariable Long id) {
 		RsData<Recruitment> rsData = recruitmentService.get(id);
 		if (rsData.isFail()) {
 			return (RsData)rsData;
 		}
-		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentResponse(rsData.getData()));
+
+		Recruitment recruitment = rsData.getData();
+
+		List<Recruitment> recruitments = recruitmentService.getCompanyRecruitments(recruitment.getCompany());
+
+		List<Long> otherRecruitmentsId = new ArrayList<>();
+		// 다른 채용공고가 있을 경우만 공고 Id 추가
+		if(recruitments.size() > 1) {
+			for(Recruitment r : recruitments) {
+				otherRecruitmentsId.add(r.getId());
+			}
+			otherRecruitmentsId.remove(recruitment.getId());
+		}
+		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentDetailResponse(recruitment, otherRecruitmentsId));
 	}
 }
