@@ -86,4 +86,14 @@ public class RecruitmentService {
 	public List<Recruitment> getAll() {
 		return recruitmentRepository.findAllByOrderByIdDesc();
 	}
+
+	public RsData<Recruitment> get(Long id) {
+		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(id);
+
+		if(opRecruitment.isEmpty()) {
+			return RsData.of("F-1", "존재하지 않는 공고입니다.");
+		}
+
+		return RsData.of("S-1", "조회 성공", opRecruitment.get());
+	}
 }

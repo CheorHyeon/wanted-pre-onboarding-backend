@@ -88,7 +88,7 @@ public class RecruitmentController {
 		}
 	}
 
-	@PatchMapping(value = "/modify/{id}", consumes = APPLICATION_JSON_VALUE)
+	@PatchMapping(value = "/modify/{id}")
 	public RsData<ModifyResponse> modify(@PathVariable Long id,
 		@RequestBody RecruitmentModifyDTO recruitmentModifyDTO) {
 		RsData<Recruitment> rsData = recruitmentService.modify(id, recruitmentModifyDTO);
@@ -119,5 +119,14 @@ public class RecruitmentController {
 			"공고 조회",
 			new RecruitmentsResponse(recruitments)
 		);
+	}
+
+	@GetMapping("/{id}")
+	public RsData<RecruitmentResponse> read(@PathVariable Long id) {
+		RsData<Recruitment> rsData = recruitmentService.get(id);
+		if (rsData.isFail()) {
+			return (RsData)rsData;
+		}
+		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentResponse(rsData.getData()));
 	}
 }
