@@ -45,7 +45,4 @@ public class Company {
 	private String nation;
 
 	private String region;
-	@OneToMany(mappedBy = "company", cascade = {CascadeType.REMOVE})
-	@ToString.Exclude
-	private List<Recruitment> recruitmentList = new ArrayList<>();
 }

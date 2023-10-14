@@ -133,4 +133,36 @@ public class RecruitmentControllerTest {
 			.andExpect(jsonPath("$.resultCode").value("F-1"))
 			.andExpect(jsonPath("$.msg").value("존재하지 않는 공고입니다."));
 	}
+
+	@Test
+	@DisplayName("채용공고 목록 조회")
+	void t005() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				get("/recruitment/list")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("readAll"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.recruitments[0].company.name").value("회사2"));
+	}
+
+	@Test
+	@DisplayName("채용공고 단건 조회")
+	void t006() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				get("/recruitment/1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("read"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.data.companyName").value("회사1"));
+	}
 }

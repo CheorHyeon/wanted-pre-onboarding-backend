@@ -2,7 +2,11 @@ package com.cheor.wanted_10.recruitment.controller;
 
 import static org.springframework.http.MediaType.*;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +47,7 @@ public class RecruitmentController {
 
 		private String content;
 		private String skill;
+
 		@JsonCreator
 		public RecruitmentResponse(Recruitment recruitment) {
 			this.companyName = recruitment.getCompany().getName();
@@ -57,7 +62,7 @@ public class RecruitmentController {
 	public RsData<RecruitmentResponse> register(@Valid @RequestBody RecruitmentDTO recruitmentDTO) {
 
 		RsData<Recruitment> rsData = recruitmentService.create(recruitmentDTO);
-		if(rsData.isFail()) {
+		if (rsData.isFail()) {
 			return (RsData)rsData;
 		}
 		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentResponse(rsData.getData()));
@@ -72,6 +77,7 @@ public class RecruitmentController {
 		private Integer reward;
 		private String content;
 		private String skill;
+
 		@JsonCreator
 		public ModifyResponse(Recruitment recruitment) {
 			this.companyName = recruitment.getCompany().getName();
@@ -82,10 +88,11 @@ public class RecruitmentController {
 		}
 	}
 
-	@PatchMapping(value = "/modify/{id}", consumes = APPLICATION_JSON_VALUE)
-	public RsData<ModifyResponse> modify(@PathVariable Long id, @RequestBody RecruitmentModifyDTO recruitmentModifyDTO) {
+	@PatchMapping(value = "/modify/{id}")
+	public RsData<ModifyResponse> modify(@PathVariable Long id,
+		@RequestBody RecruitmentModifyDTO recruitmentModifyDTO) {
 		RsData<Recruitment> rsData = recruitmentService.modify(id, recruitmentModifyDTO);
-		if(rsData.isFail()) {
+		if (rsData.isFail()) {
 			return (RsData)rsData;
 		}
 		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new ModifyResponse(rsData.getData()));
@@ -95,5 +102,31 @@ public class RecruitmentController {
 	public RsData delete(@PathVariable Long id) {
 		RsData rsData = recruitmentService.delete(id);
 		return rsData;
+	}
+
+	@AllArgsConstructor
+	@Getter
+	public static class RecruitmentsResponse {
+		private final List<Recruitment> recruitments;
+	}
+
+	@GetMapping("/list")
+	public RsData<RecruitmentsResponse> readAll() {
+		List<Recruitment> recruitments = recruitmentService.getAll();
+
+		return RsData.of(
+			"S-1",
+			"공고 조회",
+			new RecruitmentsResponse(recruitments)
+		);
+	}
+
+	@GetMapping("/{id}")
+	public RsData<RecruitmentResponse> read(@PathVariable Long id) {
+		RsData<Recruitment> rsData = recruitmentService.get(id);
+		if (rsData.isFail()) {
+			return (RsData)rsData;
+		}
+		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentResponse(rsData.getData()));
 	}
 }
