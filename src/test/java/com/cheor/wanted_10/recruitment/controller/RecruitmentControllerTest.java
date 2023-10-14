@@ -147,7 +147,7 @@ public class RecruitmentControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("readAll"))
 			.andExpect(jsonPath("$.resultCode").value("S-1"))
-			.andExpect(jsonPath("$.data.recruitments[0].company.name").value("회사2"));
+			.andExpect(jsonPath("$.data.recruitments[0].company.name").value("회사1"));
 	}
 
 	@Test
@@ -163,6 +163,8 @@ public class RecruitmentControllerTest {
 			.andExpect(status().is2xxSuccessful())
 			.andExpect(handler().methodName("read"))
 			.andExpect(jsonPath("$.resultCode").value("S-1"))
-			.andExpect(jsonPath("$.data.companyName").value("회사1"));
+			.andExpect(jsonPath("$.data.companyName").value("회사1"))
+			.andExpect(jsonPath("$.data.otherRecruitmentsId[0]").value(3))
+			.andExpect(jsonPath("$.data.otherRecruitmentsId[1]").value(4));
 	}
 }

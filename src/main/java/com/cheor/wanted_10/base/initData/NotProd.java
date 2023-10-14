@@ -71,7 +71,23 @@ public class NotProd {
 					.position("백엔드")
 					.build();
 
-				recruitmentRepository.saveAll(List.of(recruitment1, recruitment2));
+				Recruitment recruitment3 = Recruitment.builder()
+					.content("테스트 채용3")
+					.skill("python123")
+					.reward(3230)
+					.company(company1)
+					.position("백엔드123")
+					.build();
+
+				Recruitment recruitment4 = Recruitment.builder()
+					.content("테스트 채용4")
+					.skill("python123")
+					.reward(3800)
+					.company(company1)
+					.position("백엔드123")
+					.build();
+
+				recruitmentRepository.saveAll(List.of(recruitment1, recruitment2, recruitment3, recruitment4));
 			}
 		};
 	}

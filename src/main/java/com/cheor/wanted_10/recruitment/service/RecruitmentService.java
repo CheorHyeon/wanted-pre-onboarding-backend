@@ -94,6 +94,15 @@ public class RecruitmentService {
 			return RsData.of("F-1", "존재하지 않는 공고입니다.");
 		}
 
+		Recruitment recruitment = opRecruitment.get();
+
+		List<Recruitment> allRecruitmentByCompany = recruitmentRepository.findAllByCompany(recruitment.getCompany());
+
 		return RsData.of("S-1", "조회 성공", opRecruitment.get());
+
+	}
+
+	public List<Recruitment> getCompanyRecruitments(Company company) {
+		return recruitmentRepository.findAllByCompany(company);
 	}
 }
