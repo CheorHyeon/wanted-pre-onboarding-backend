@@ -9,14 +9,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cheor.wanted_10.base.rsData.RsData;
 import com.cheor.wanted_10.company.company.CompanyService;
 import com.cheor.wanted_10.company.entity.Company;
-import com.cheor.wanted_10.recruitment.controller.RecruitmentController;
 import com.cheor.wanted_10.recruitment.dto.RecruitmentDTO;
 import com.cheor.wanted_10.recruitment.dto.RecruitmentModifyDTO;
 import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.repository.RecruitmentRepository;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -30,7 +27,7 @@ public class RecruitmentService {
 	public RsData<Recruitment> create(RecruitmentDTO recruitmentDTO) {
 		String companyName = recruitmentDTO.getCompanyName();
 		RsData<Company> company = companyService.getCompanyByName(companyName);
-		if(company.isFail()) {
+		if (company.isFail()) {
 			return RsData.of("F-1", "본 서비스에 등록된 회사가 아닙니다.");
 		}
 		Recruitment recruitment = Recruitment.builder()
@@ -50,16 +47,19 @@ public class RecruitmentService {
 	public RsData<Recruitment> modify(Long recruitmentId, RecruitmentModifyDTO recruitmentModifyDTO) {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(recruitmentId);
 
-		if(opRecruitment.isEmpty()) {
+		if (opRecruitment.isEmpty()) {
 			return RsData.of("F-1", "등록되지 않은 공고입니다.");
 		}
 
 		Recruitment recruitment = opRecruitment.get();
 
 		Recruitment modifyRecruitment = recruitment.toBuilder()
-			.position(recruitmentModifyDTO.getPosition() == null ? recruitment.getPosition() : recruitmentModifyDTO.getPosition())
-			.content(recruitmentModifyDTO.getContent() == null ? recruitment.getContent() : recruitmentModifyDTO.getContent())
-			.reward(recruitmentModifyDTO.getReward() == null ? recruitment.getReward() : recruitmentModifyDTO.getReward())
+			.position(recruitmentModifyDTO.getPosition() == null ? recruitment.getPosition() :
+				recruitmentModifyDTO.getPosition())
+			.content(recruitmentModifyDTO.getContent() == null ? recruitment.getContent() :
+				recruitmentModifyDTO.getContent())
+			.reward(
+				recruitmentModifyDTO.getReward() == null ? recruitment.getReward() : recruitmentModifyDTO.getReward())
 			.skill(recruitmentModifyDTO.getSkill() == null ? recruitment.getSkill() : recruitmentModifyDTO.getSkill())
 			.build();
 
@@ -72,7 +72,7 @@ public class RecruitmentService {
 	public RsData delete(Long id) {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(id);
 
-		if(opRecruitment.isEmpty()) {
+		if (opRecruitment.isEmpty()) {
 			return RsData.of("F-1", "존재하지 않는 공고입니다.");
 		}
 
@@ -80,7 +80,8 @@ public class RecruitmentService {
 
 		recruitmentRepository.delete(recruitment);
 
-		return RsData.of("S-1", "%s 회사의 %s 직무 공고가 성공적으로 삭제되었습니다.".formatted(recruitment.getCompany().getName(), recruitment.getPosition()));
+		return RsData.of("S-1",
+			"%s 회사의 %s 직무 공고가 성공적으로 삭제되었습니다.".formatted(recruitment.getCompany().getName(), recruitment.getPosition()));
 	}
 
 	public List<Recruitment> getAll() {
@@ -90,16 +91,11 @@ public class RecruitmentService {
 	public RsData<Recruitment> get(Long id) {
 		Optional<Recruitment> opRecruitment = recruitmentRepository.findById(id);
 
-		if(opRecruitment.isEmpty()) {
+		if (opRecruitment.isEmpty()) {
 			return RsData.of("F-1", "존재하지 않는 공고입니다.");
 		}
 
-		Recruitment recruitment = opRecruitment.get();
-
-		List<Recruitment> allRecruitmentByCompany = recruitmentRepository.findAllByCompany(recruitment.getCompany());
-
 		return RsData.of("S-1", "조회 성공", opRecruitment.get());
-
 	}
 
 	public List<Recruitment> getCompanyRecruitments(Company company) {
