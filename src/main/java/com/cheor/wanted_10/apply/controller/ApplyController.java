@@ -15,6 +15,8 @@ import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.service.RecruitmentService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/recruitment/apply")
+@Tag(name = "ApplyController", description = "사용자 채용 공고 지원")
 public class ApplyController {
 	private final ApplyService applyService;
 
@@ -34,6 +37,7 @@ public class ApplyController {
 		private Apply apply;
 	}
 	@PostMapping("")
+	@Operation(summary = "사용자 채용 공고 지원 기능")
 	public RsData<ApplyResponse> create(@Valid @RequestBody ApplyDTO applyDTO) {
 
 		RsData<Apply> rsData = applyService.create(applyDTO);

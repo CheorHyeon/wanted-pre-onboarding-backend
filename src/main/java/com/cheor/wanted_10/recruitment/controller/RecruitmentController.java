@@ -20,6 +20,8 @@ import com.cheor.wanted_10.recruitment.entyty.Recruitment;
 import com.cheor.wanted_10.recruitment.service.RecruitmentService;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/recruitment")
+@Tag(name = "RecruitmentController", description = "채용 공고 CRUD")
 public class RecruitmentController {
 	private final RecruitmentService recruitmentService;
 
@@ -56,6 +59,7 @@ public class RecruitmentController {
 	}
 
 	@PostMapping("/register")
+	@Operation(summary = "채용 공고 등록")
 	public RsData<RecruitmentResponse> register(@Valid @RequestBody RecruitmentDTO recruitmentDTO) {
 
 		RsData<Recruitment> rsData = recruitmentService.create(recruitmentDTO);
@@ -88,6 +92,7 @@ public class RecruitmentController {
 	}
 
 	@PatchMapping(value = "/modify/{id}")
+	@Operation(summary = "채용 공고 수정")
 	public RsData<ModifyResponse> modify(@PathVariable Long id,
 		@RequestBody RecruitmentModifyDTO recruitmentModifyDTO) {
 		RsData<Recruitment> rsData = recruitmentService.modify(id, recruitmentModifyDTO);
@@ -98,6 +103,7 @@ public class RecruitmentController {
 	}
 
 	@DeleteMapping("/{id}")
+	@Operation(summary = "채용 공고 삭제")
 	public RsData delete(@PathVariable Long id) {
 		RsData rsData = recruitmentService.delete(id);
 		return rsData;
@@ -110,6 +116,7 @@ public class RecruitmentController {
 	}
 
 	@GetMapping("/list")
+	@Operation(summary = "채용 공고 전체 조회 혹은 검색")
 	public RsData<RecruitmentsResponse> readAll(@RequestParam(required = false) String search) {
 		List<Recruitment> recruitments;
 
@@ -144,6 +151,7 @@ public class RecruitmentController {
 	}
 
 	@GetMapping("/{id}")
+	@Operation(summary = "채용 공고 상세 조회")
 	public RsData<RecruitmentDetailResponse> read(@PathVariable Long id) {
 		RsData<Recruitment> rsData = recruitmentService.get(id);
 		if (rsData.isFail()) {
