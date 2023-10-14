@@ -104,4 +104,33 @@ public class RecruitmentControllerTest {
 			.andExpect(jsonPath("$.resultCode").value("S-1"))
 			.andExpect(jsonPath("$.data.skill").value("수정된skill!"));
 	}
+
+	@Test
+	@DisplayName("채용공고 삭제 테스트 및 삭제한거 다시 삭제 시도")
+	void t004() throws Exception {
+		ResultActions resultActions = mvc
+			.perform(
+				delete("/recruitment/1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("delete"))
+			.andExpect(jsonPath("$.resultCode").value("S-1"))
+			.andExpect(jsonPath("$.msg").value("회사1 회사의 백엔드 직무 공고가 성공적으로 삭제되었습니다."));
+
+		// 삭제한거 다시 삭제하려 시도
+		resultActions = mvc
+			.perform(
+				delete("/recruitment/1")
+			)
+			.andDo(print());
+
+		resultActions
+			.andExpect(status().is2xxSuccessful())
+			.andExpect(handler().methodName("delete"))
+			.andExpect(jsonPath("$.resultCode").value("F-1"))
+			.andExpect(jsonPath("$.msg").value("존재하지 않는 공고입니다."));
+	}
 }
