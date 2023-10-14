@@ -101,4 +101,8 @@ public class RecruitmentService {
 	public List<Recruitment> getCompanyRecruitments(Company company) {
 		return recruitmentRepository.findAllByCompany(company);
 	}
+
+	public List<Recruitment> getByKeyWord(String keyWord) {
+		return recruitmentRepository.findAllByKeyWord(keyWord);
+	}
 }

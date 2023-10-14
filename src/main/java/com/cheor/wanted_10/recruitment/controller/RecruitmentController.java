@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cheor.wanted_10.base.rsData.RsData;
@@ -109,9 +110,20 @@ public class RecruitmentController {
 	}
 
 	@GetMapping("/list")
-	public RsData<RecruitmentsResponse> readAll() {
-		List<Recruitment> recruitments = recruitmentService.getAll();
+	public RsData<RecruitmentsResponse> readAll(@RequestParam(required = false) String search) {
+		List<Recruitment> recruitments;
 
+		// 혹시 모를 공백 제거
+		if (search != null) {
+			search = search.trim();
+		}
+
+		// 검색어 유무에 따라 다른 메서드 호출
+		if (search == null || search.isBlank()) {
+			recruitments = recruitmentService.getAll();
+		} else {
+			recruitments = recruitmentService.getByKeyWord(search);
+		}
 		return RsData.of(
 			"S-1",
 			"공고 조회",
@@ -144,12 +156,13 @@ public class RecruitmentController {
 
 		List<Long> otherRecruitmentsId = new ArrayList<>();
 		// 다른 채용공고가 있을 경우만 공고 Id 추가
-		if(recruitments.size() > 1) {
-			for(Recruitment r : recruitments) {
+		if (recruitments.size() > 1) {
+			for (Recruitment r : recruitments) {
 				otherRecruitmentsId.add(r.getId());
 			}
 			otherRecruitmentsId.remove(recruitment.getId());
 		}
-		return RsData.of(rsData.getResultCode(), rsData.getMsg(), new RecruitmentDetailResponse(recruitment, otherRecruitmentsId));
+		return RsData.of(rsData.getResultCode(), rsData.getMsg(),
+			new RecruitmentDetailResponse(recruitment, otherRecruitmentsId));
 	}
 }
