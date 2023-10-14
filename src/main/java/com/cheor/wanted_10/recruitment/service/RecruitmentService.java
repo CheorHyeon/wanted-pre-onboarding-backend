@@ -1,5 +1,6 @@
 package com.cheor.wanted_10.recruitment.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -80,5 +81,9 @@ public class RecruitmentService {
 		recruitmentRepository.delete(recruitment);
 
 		return RsData.of("S-1", "%s 회사의 %s 직무 공고가 성공적으로 삭제되었습니다.".formatted(recruitment.getCompany().getName(), recruitment.getPosition()));
+	}
+
+	public List<Recruitment> getAll() {
+		return recruitmentRepository.findAllByOrderByIdDesc();
 	}
 }
